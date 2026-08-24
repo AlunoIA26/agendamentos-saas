@@ -1,8 +1,10 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+from routes.cliente_routes import cliente_bp
  
 app = Flask(__name__)
 CORS(app)
+app.register_blueprint(cliente_bp)
  
  
 @app.route("/api/status")
