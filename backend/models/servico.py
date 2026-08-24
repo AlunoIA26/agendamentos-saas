@@ -1,6 +1,15 @@
+from dataclasses import dataclass
+ 
+ 
+@dataclass
 class Servico:
-    def __init__(self, id, nome, duracao_minutos, preco):
-        self.id = id
-        self.nome = nome
-        self.duracao_minutos = duracao_minutos
-        self.preco = preco
+    id: int
+    nome: str
+    duracao_minutos: int
+    preco: float
+ 
+    def __post_init__(self):
+        if self.duracao_minutos <= 0:
+            raise ValueError("A duração do serviço precisa ser maior que zero.")
+        if self.preco < 0:
+            raise ValueError("O preço não pode ser negativo.")
