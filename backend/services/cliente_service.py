@@ -12,3 +12,11 @@ class ClienteService:
  
     def listar_clientes(self):
         return self.repository.listar_todos()
+
+    def remover_cliente(self, cliente_id):
+        from repositories.agendamento_repository import AgendamentoRepository
+        agendamentos = AgendamentoRepository()
+        if agendamentos.existe_agendamento_para_cliente(cliente_id):
+            raise ValueError("Não é possível excluir um cliente com agendamentos.")
+        self.repository.remover(cliente_id)
+
