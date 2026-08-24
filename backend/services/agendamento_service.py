@@ -36,10 +36,28 @@ class AgendamentoService:
         agendamento = Agendamento(None, cliente_id, profissional_id, servico_id, data_hora)
         return self.repository.adicionar(agendamento)
 
-def proximos_agendamentos(self, profissional_id, minutos=15):
-        agora = datetime.now()
-        limite = agora + timedelta(minutes=minutos)
-        return self.repository.listar_por_profissional_e_periodo(
-            profissional_id, agora.isoformat(), limite.isoformat()
-        )
+    def proximos_agendamentos(self, profissional_id, minutos=15):
+            agora = datetime.now()
+            limite = agora + timedelta(minutes=minutos)
+            return self.repository.listar_por_profissional_e_periodo(
+                profissional_id, agora.isoformat(), limite.isoformat()
+            )
+
+    def cancelar_agendamento(self, agendamento_id):
+        agendamento = self.repository.buscar_por_id(agendamento_id)
+        if agendamento is None:
+            raise ValueError("Agendamento não encontrado.")
+        if agendamento.status == "concluido":
+            raise ValueError("Não é possível cancelar um agendamento já concluído.")
+        self.repository.atualizar_status(agendamento_id, "cancelado")
+ 
+    def concluir_agendamento(self, agendamento_id):
+        agendamento = self.repository.buscar_por_id(agendamento_id)
+        if agendamento is None:
+            raise ValueError("Agendamento não encontrado.")
+        self.repository.atualizar_status(agendamento_id, "concluido")
+ 
+    def historico_do_cliente(self, cliente_id):
+        return self.repository.historico_do_cliente(cliente_id)
+
 

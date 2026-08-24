@@ -65,3 +65,41 @@ class AgendamentoRepository:
         cursor.close()
         conexao.close()
         return [Agendamento(*linha) for linha in linhas]
+
+    def buscar_por_id(self, agendamento_id):
+        conexao = conectar()
+        cursor = conexao.cursor()
+        cursor.execute(
+            """SELECT id, cliente_id, profissional_id, servico_id, data_hora, status
+               FROM agendamentos WHERE id = %s""",
+            (agendamento_id,),
+        )
+        linha = cursor.fetchone()
+        cursor.close()
+        conexao.close()
+        return Agendamento(*linha) if linha else None
+ 
+    def atualizar_status(self, agendamento_id, novo_status):
+        conexao = conectar()
+        cursor = conexao.cursor()
+        cursor.execute(
+            "UPDATE agendamentos SET status = %s WHERE id = %s",
+            (novo_status, agendamento_id),
+        )
+        conexao.commit()
+        cursor.close()
+        conexao.close()
+ 
+    def historico_do_cliente(self, cliente_id):
+        conexao = conectar()
+        cursor = conexao.cursor()
+        cursor.execute(
+            """SELECT id, cliente_id, profissional_id, servico_id, data_hora, status
+               FROM agendamentos WHERE cliente_id = %s ORDER BY data_hora""",
+            (cliente_id,),
+        )
+        linhas = cursor.fetchall()
+        cursor.close()
+        conexao.close()
+        return [Agendamento(*linha) for linha in linhas]
+

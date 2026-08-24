@@ -16,3 +16,34 @@ def criar_agendamento():
         return jsonify(vars(agendamento)), 201
     except (ValueError, KeyError) as erro:
         return jsonify({"erro": str(erro)}), 400
+
+@agendamento_bp.route(
+    "/api/agendamentos/<int:agendamento_id>/cancelar",
+    methods=["POST"]
+)
+def cancelar(agendamento_id):
+    try:
+        service.cancelar_agendamento(agendamento_id)
+        return jsonify({"mensagem": "Agendamento cancelado."})
+    except ValueError as erro:
+        return jsonify({"erro": str(erro)}), 400
+ 
+ 
+@agendamento_bp.route(
+    "/api/clientes/<int:cliente_id>/historico",
+    methods=["GET"]
+)
+def historico(cliente_id):
+    agendamentos = service.historico_do_cliente(cliente_id)
+    return jsonify([_serializar(a) for a in agendamentos])
+
+@agendamento_bp.route(
+    "/api/agendamentos/<int:agendamento_id>/concluir",
+    methods=["POST"]
+)
+def concluir(agendamento_id):
+    try:
+        service.concluir_agendamento(agendamento_id)
+        return jsonify({"mensagem": "Agendamento concluído."})
+    except ValueError as erro:
+        return jsonify({"erro": str(erro)}), 400
