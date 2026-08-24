@@ -3,6 +3,7 @@ from repositories.cliente_repository import ClienteRepository
 from repositories.profissional_repository import ProfissionalRepository
 from repositories.servico_repository import ServicoRepository
 from models.agendamento import Agendamento
+from datetime import datetime, timedelta
  
  
 class AgendamentoService:
@@ -16,15 +17,29 @@ class AgendamentoService:
         ids_clientes = [c.id for c in self.clientes.listar_todos()]
         if cliente_id not in ids_clientes:
             raise ValueError("Cliente não encontrado.")
-        ids_profissionais = [p.id for p in self.profissionais.listar_todos()]
-        if profissional_id not in ids_profissionais:
-            raise ValueError("Profissional não encontrado.")
  
-        conflitos = self.repository.listar_por_profissional_e_data(
-            profissional_id, data_hora
+        servico = next(
+            (s for s in self.servicos.listar_todos() if s.id == servico_id), None
+        )
+        if servico is None:
+            raise ValueError("Serviço não encontrado.")
+ 
+        inicio = datetime.fromisoformat(data_hora)
+        fim = inicio + timedelta(minutes=servico.duracao_minutos)
+ 
+        conflitos = self.repository.listar_conflitos(
+            profissional_id, inicio.isoformat(), fim.isoformat()
         )
         if conflitos:
-            raise ValueError("Já existe um agendamento para este profissional neste horário.")
+            raise ValueError("Este horário conflita com outro agendamento do profissional.")
  
         agendamento = Agendamento(None, cliente_id, profissional_id, servico_id, data_hora)
         return self.repository.adicionar(agendamento)
+
+def proximos_agendamentos(self, profissional_id, minutos=15):
+        agora = datetime.now()
+        limite = agora + timedelta(minutes=minutos)
+        return self.repository.listar_por_profissional_e_periodo(
+            profissional_id, agora.isoformat(), limite.isoformat()
+        )
+
