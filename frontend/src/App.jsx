@@ -1,21 +1,23 @@
-import { useEffect, useState } from "react";
-import { buscarStatus } from "./services/api";
+import { useState } from "react";
+import ClienteList from "./components/ClienteList";
+import ClienteForm from "./components/ClienteForm";
+ 
+const clientesIniciais = [
+  { id: 1, nome: "Maria Silva", telefone: "11999990000", email: "maria@email.com" },
+];
  
 function App() {
-  const [status, setStatus] = useState(null);
+  const [clientes, setClientes] = useState(clientesIniciais);
  
-  useEffect(() => {
-    buscarStatus().then(setStatus);
-  }, []);
+  function adicionarCliente(novoCliente) {
+    setClientes([...clientes, { ...novoCliente, id: Date.now() }]);
+  }
  
   return (
     <div>
-      <h1>Agendamentos SaaS</h1>
-      {status ? (
-        <p>Backend conectado: {status.sistema} ({status.status})</p>
-      ) : (
-        <p>Conectando ao backend...</p>
-      )}
+      <h1>Clientes</h1>
+      <ClienteForm aoSalvar={adicionarCliente} />
+      <ClienteList clientes={clientes} />
     </div>
   );
 }
