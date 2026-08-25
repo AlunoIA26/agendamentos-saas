@@ -103,3 +103,20 @@ class AgendamentoRepository:
         conexao.close()
         return [Agendamento(*linha) for linha in linhas]
 
+    def listar_todos_detalhado(self):
+        conexao = conectar()
+        cursor = conexao.cursor()
+        cursor.execute(
+            """SELECT a.id, c.nome, p.nome, s.nome, a.data_hora, a.status
+               FROM agendamentos a
+               JOIN clientes c ON c.id = a.cliente_id
+               JOIN profissionais p ON p.id = a.profissional_id
+               JOIN servicos s ON s.id = a.servico_id
+               ORDER BY a.data_hora"""
+        )
+        linhas = cursor.fetchall()
+        cursor.close()
+        conexao.close()
+        return linhas
+
+

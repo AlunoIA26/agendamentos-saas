@@ -4,7 +4,18 @@ from repositories.profissional_repository import ProfissionalRepository
 from repositories.servico_repository import ServicoRepository
 from models.agendamento import Agendamento
 from datetime import datetime, timedelta
+
+def _iso(valor):
+    """Converte data/hora para o formato ISO (2026-07-30T10:00).
  
+    Sem esta conversao, o Flask serializa a data no formato
+    HTTP ("Thu, 30 Jul 2026 10:00:00 GMT"), que o JavaScript
+    interpreta como UTC e exibe com o fuso trocado.
+    """
+    if hasattr(valor, "isoformat"):
+        return valor.isoformat(timespec="minutes")
+    return valor
+
  
 class AgendamentoService:
     def __init__(self):
@@ -59,5 +70,21 @@ class AgendamentoService:
  
     def historico_do_cliente(self, cliente_id):
         return self.repository.historico_do_cliente(cliente_id)
+
+    def listar_agendamentos(self):
+        linhas = self.repository.listar_todos_detalhado()
+        return [
+            {
+                "id": id_,
+                "cliente": cliente,
+                "profissional": profissional,
+                "servico": servico,
+                "data_hora": _iso(data_hora),
+                "status": status,
+            }
+            for id_, cliente, profissional, servico,
+                data_hora, status in linhas
+        ]
+
 
 
