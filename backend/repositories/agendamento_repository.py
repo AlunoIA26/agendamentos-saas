@@ -119,4 +119,40 @@ class AgendamentoRepository:
         conexao.close()
         return linhas
 
+    def faturamento_por_profissional(self, inicio=None, fim=None):
+        conexao = conectar()
+        cursor = conexao.cursor()
+
+        sql = """
+            SELECT
+                p.id,
+                p.nome,
+                COUNT(a.id),
+                COALESCE(SUM(s.preco), 0)
+            FROM agendamentos a
+            JOIN profissionais p ON p.id = a.profissional_id
+            JOIN servicos s ON s.id = a.servico_id
+            WHERE a.status = 'concluido'
+        """
+
+        params = []
+
+        if inicio:
+            sql += " AND a.data_hora >= %s"
+            params.append(inicio)
+
+        if fim:
+            sql += " AND a.data_hora < (%s::date + INTERVAL '1 day')"
+            params.append(fim)
+
+        sql += " GROUP BY p.id, p.nome ORDER BY p.nome"
+
+        cursor.execute(sql, tuple(params))
+
+        linhas = cursor.fetchall()
+
+        cursor.close()
+        conexao.close()
+
+        return linhas
 
