@@ -1,4 +1,4 @@
-function Menu({ telaAtiva, aoTrocarTela }) {
+function Menu({ telaAtiva, aoTrocarTela, aoSair }) {
   const telas = [
     { chave: "agenda", rotulo: "Agenda" },
     { chave: "clientes", rotulo: "Clientes" },
@@ -23,6 +23,13 @@ function Menu({ telaAtiva, aoTrocarTela }) {
           {tela.rotulo}
         </button>
       ))}
+
+      <button
+        className="botao-sair"
+        onClick={aoSair}
+      >
+        Sair
+      </button>
     </nav>
   );
 }
