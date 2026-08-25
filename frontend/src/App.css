@@ -278,3 +278,173 @@
     margin-left: 24px;
   }
 }
+
+/* ================================
+   RELATÓRIO DE FATURAMENTO
+   ================================ */
+
+.cards-resumo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border: 1px solid #eee;
+}
+
+.card-titulo {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.card-valor {
+  font-size: 28px;
+  font-weight: 700;
+  color: #7A1FA2;
+}
+
+/* Botão principal */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  margin: 8px 8px 8px 0;
+  border-radius: 8px;
+  background: #7A1FA2;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.botao:hover {
+  background: #641784;
+  transform: translateY(-1px);
+}
+
+/* Tabela */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  background: #ffffff;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #7A1FA2;
+  color: #ffffff;
+}
+
+/* Filtros */
+.filtros-relatorio {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.filtros-relatorio label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.filtros-relatorio input {
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* Botões dos filtros */
+.filtros-relatorio button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 8px;
+  background: #7A1FA2;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filtros-relatorio button:hover {
+  background: #641784;
+}
+
+/* ================================
+   TELAS MAIORES
+   ================================ */
+
+@media (min-width: 768px) {
+  .cards-resumo {
+    flex-direction: row;
+  }
+
+  .card {
+    flex: 1;
+  }
+
+  .filtros-relatorio {
+    flex-direction: row;
+    align-items: end;
+    flex-wrap: wrap;
+  }
+
+  .filtros-relatorio label {
+    width: 180px;
+  }
+}
+
+/* ================================
+   CELULAR
+   ================================ */
+
+@media (max-width: 600px) {
+  .cards-resumo {
+    width: 100%;
+  }
+
+  .card {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Permite rolagem horizontal da tabela */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th,
+  td {
+    padding: 10px;
+  }
+
+  .botao {
+    width: 100%;
+    margin: 6px 0;
+  }
+}

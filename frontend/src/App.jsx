@@ -9,6 +9,7 @@ import ProfissionalForm from "./components/ProfissionalForm";
 import ServicoList from "./components/ServicoList";
 import ServicoForm from "./components/ServicoForm";
 import LoginForm from "./components/LoginForm";
+import RelatorioFaturamento from "./components/RelatorioFaturamento";
 
 import {
   listarClientes,
@@ -166,6 +167,13 @@ function App() {
           <h1>Serviços</h1>
           <ServicoForm aoSalvar={adicionarServico} />
           <ServicoList servicos={servicos} />
+        </div>
+      )}
+
+      {telaAtiva === "relatorios" && (
+        <div>
+          <h1>Relatório de Faturamento</h1>
+          <RelatorioFaturamento />
         </div>
       )}
     </div>

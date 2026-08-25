@@ -4,8 +4,9 @@ function Menu({ telaAtiva, aoTrocarTela }) {
     { chave: "clientes", rotulo: "Clientes" },
     { chave: "profissionais", rotulo: "Profissionais" },
     { chave: "servicos", rotulo: "Serviços" },
+    { chave: "relatorios", rotulo: "Relatórios" },
   ];
- 
+
   return (
     <nav>
       {telas.map((tela) => (
@@ -13,7 +14,10 @@ function Menu({ telaAtiva, aoTrocarTela }) {
           key={tela.chave}
           onClick={() => aoTrocarTela(tela.chave)}
           style={{
-            fontWeight: telaAtiva === tela.chave ? "bold" : "normal",
+            fontWeight:
+              telaAtiva === tela.chave
+                ? "bold"
+                : "normal",
           }}
         >
           {tela.rotulo}
@@ -22,5 +26,5 @@ function Menu({ telaAtiva, aoTrocarTela }) {
     </nav>
   );
 }
- 
+
 export default Menu;

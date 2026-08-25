@@ -168,3 +168,59 @@ export function cabecalhoAutenticado() {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   };
 }
+
+export async function buscarFaturamento(inicio, fim) {
+  const params = new URLSearchParams();
+
+  if (inicio) params.set("inicio", inicio);
+  if (fim) params.set("fim", fim);
+
+  const query = params.toString()
+    ? `?${params.toString()}`
+    : "";
+
+  const resposta = await fetch(
+    `${BASE_URL}/api/relatorios/faturamento${query}`,
+    {
+      headers: cabecalhoAutenticado(),
+    }
+  );
+
+  const dados = await resposta.json();
+
+  if (!resposta.ok) {
+    throw new Error(
+      dados.erro || "Erro ao buscar faturamento."
+    );
+  }
+
+  return dados;
+}
+
+
+export function urlExportacaoCsv(inicio, fim) {
+  const params = new URLSearchParams();
+
+  if (inicio) params.set("inicio", inicio);
+  if (fim) params.set("fim", fim);
+
+  const query = params.toString()
+    ? `?${params.toString()}`
+    : "";
+
+  return `${BASE_URL}/api/relatorios/faturamento/csv${query}`;
+}
+
+
+export function urlExportacaoExcel(inicio, fim) {
+  const params = new URLSearchParams();
+
+  if (inicio) params.set("inicio", inicio);
+  if (fim) params.set("fim", fim);
+
+  const query = params.toString()
+    ? `?${params.toString()}`
+    : "";
+
+  return `${BASE_URL}/api/relatorios/faturamento/excel${query}`;
+}
